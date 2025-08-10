@@ -1,0 +1,14 @@
+body {
+  background-color: rgb(216, 216, 216);
+}
+
+.test {
+  color: green;
+  font-size: 30px;
+}
+
+.card {
+  width: 300px;
+  border: 1px solid black;
+  padding: 20px;
+}
