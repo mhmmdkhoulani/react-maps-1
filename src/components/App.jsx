@@ -7,6 +7,8 @@ import ProfileCard from "./ProfileCard";
 import Greeting from "./Greeting";
 import Counter from "./Counter";
 import UserForm from "./UserForm";
+import UsersList from "./usersList";
+import { useState } from "react";
 
 // function App() {
 //   const users = [
@@ -78,10 +80,21 @@ import UserForm from "./UserForm";
 // export default App;
 
 function App() {
+  const [users, setUsers] = useState([]);
+
+  function addUser(user) {
+    setUsers([...users, user]);
+  }
+  function deleteUser(userName) {
+    const newUsers = users.filter((user) => user.userName !== userName);
+    setUsers(newUsers);
+  }
+
   return (
     <>
       {/* <Counter /> */}
-      <UserForm />
+      <UserForm addUser={addUser} />
+      <UsersList users={users} deleteUser={deleteUser} />
     </>
   );
 }
