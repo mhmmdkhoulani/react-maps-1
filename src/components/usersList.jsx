@@ -5,10 +5,16 @@ function UsersList({ users, deleteUser }) {
     <div>
       <h1>Users List</h1>
       {users.map((user) => (
-        <ul key={Math.random()}>
-          <li>{user.userName}</li>
+        <ul
+          key={user.id}
+          style={{ backgroundColor: user.gender == "female" ? "red" : "blue" }}
+        >
+          <li>
+            {user.firstName} {user.lastName || "Guest"}
+          </li>
           <li>{user.email}</li>
-          <button onClick={() => deleteUser(user.userName)}>Delete</button>
+          <li>{user.gender}</li>
+          <button onClick={() => deleteUser(user.id)}>Delete</button>
         </ul>
       ))}
     </div>

@@ -8,7 +8,8 @@ import Greeting from "./Greeting";
 import Counter from "./Counter";
 import UserForm from "./UserForm";
 import UsersList from "./usersList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useFetchData from "../hooks/useFetchData";
 
 // function App() {
 //   const users = [
@@ -80,13 +81,20 @@ import { useState } from "react";
 // export default App;
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [data, isLoading, error] = useFetchData("https://dummyjson.com/users");
+
+  const [user, setUsers] = useState([]);
+
+  useEffect(() => {
+    setUsers(data);
+  }, [data]);
+  const [counter, setCounter] = useState(0);
 
   function addUser(user) {
     setUsers([...users, user]);
   }
-  function deleteUser(userName) {
-    const newUsers = users.filter((user) => user.userName !== userName);
+  function deleteUser(id) {
+    const newUsers = users.filter((user) => user.id !== id);
     setUsers(newUsers);
   }
 
@@ -94,7 +102,13 @@ function App() {
     <>
       {/* <Counter /> */}
       <UserForm addUser={addUser} />
-      <UsersList users={users} deleteUser={deleteUser} />
+      {error && <span style={{ color: "red" }}>{error}</span>}
+      {isLoading && <span>Loading...</span>}
+      {!isLoading && !error && (
+        <UsersList users={user} deleteUser={deleteUser} />
+      )}
+      <h1>{counter}</h1>
+      <button onClick={() => setCounter(counter + 1)}>Check Effect</button>
     </>
   );
 }
