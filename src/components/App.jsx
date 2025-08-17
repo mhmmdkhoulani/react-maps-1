@@ -83,15 +83,31 @@ import useFetchData from "../hooks/useFetchData";
 function App() {
   const [data, isLoading, error] = useFetchData("https://dummyjson.com/users");
 
-  const [user, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     setUsers(data);
   }, [data]);
   const [counter, setCounter] = useState(0);
 
-  function addUser(user) {
-    setUsers([...users, user]);
+  async function addUser(user) {
+    try {
+      const response = await fetch("https://dummyjson.com/users/add", {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const newUser = await response.json();
+      console.log(newUser);
+      setUsers([...users, newUser]);
+    } catch (error) {
+      console.error(error);
+    }
   }
   function deleteUser(id) {
     const newUsers = users.filter((user) => user.id !== id);
@@ -105,7 +121,7 @@ function App() {
       {error && <span style={{ color: "red" }}>{error}</span>}
       {isLoading && <span>Loading...</span>}
       {!isLoading && !error && (
-        <UsersList users={user} deleteUser={deleteUser} />
+        <UsersList users={users} deleteUser={deleteUser} />
       )}
       <h1>{counter}</h1>
       <button onClick={() => setCounter(counter + 1)}>Check Effect</button>

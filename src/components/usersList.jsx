@@ -14,6 +14,7 @@ function UsersList({ users, deleteUser }) {
           </li>
           <li>{user.email}</li>
           <li>{user.gender}</li>
+          <li>{user.id}</li>
           <button onClick={() => deleteUser(user.id)}>Delete</button>
         </ul>
       ))}
